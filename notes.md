@@ -18,7 +18,7 @@ Conjuntos: colección de elementos representado como enumeración o descripción
 
 Notación:
 
-![[assets/2024-02-13-14-12-50-image.png]]
+![](assets/2024-02-13-14-12-50-image.png)
 
 La inclusión se usa siempre con llaves a la izquierda ya que compara conjunto - conjunto. La pertenencia usa siempre la forma elemento - conjunto.
 
@@ -34,7 +34,7 @@ Una función depende de que a toda $x$ existe una única $f(x)$, es decir, para 
 
 Diagrama de Hasse: para mostrar todos los elementos en una relación, es decir, todas las tuplas en order con una flecha.
 
-![[assets/Pasted image 20240331123241.png]]
+![](assets/Pasted%20image%2020240331123241.png)
 
 Reflexividad: una relación es reflexiva si (y solo si) contiene para cada elemento en el conjunto por lo menos una tupla interior que sea reflexiva (que se contiene únicamente a sí mismo pero dos veces). Todos las tuplas conteniendo su mismo elemento varias veces es reflexiva, como $(1,1)$, ó $(2,2,2)$, etc. Se puede expresar como:
 
@@ -52,7 +52,7 @@ La potencia de un alfabeto se define recursivamente a partir de sus anteriores p
 
 Las potencias son todas las combinaciones posibles de cierto $\Sigma$ de $n$ elementos (que es un número entero positivo  $n\in\mathbb{Z^+}$).
 
-<img title="" src="assets/5cefd4846630e2b44b0fc3b6cf0ddcb1d28d6b59.JPG" alt="" width="427" data-align="center">
+![](assets/5cefd4846630e2b44b0fc3b6cf0ddcb1d28d6b59.JPG)
 
 En la figura arriba en el último renglón, los números negros son $x$, que vienen de $\Sigma$ (1d arr), y los dos rojos son $y$, que vienen de $\Sigma^2$ (2d arr).
 
@@ -70,7 +70,7 @@ Dos palabras $w_1$ y $w_2$ son iguales si para todo carácter contenido en una p
 
 Una palabra es una concatenación de otras palabras contenidas en $\Sigma^{*}$. 
 
-![[assets/2024-02-20-14-18-44-image.png]]
+![](assets/2024-02-20-14-18-44-image.png)
 
 $x^{n+1}=xx^n$
 
@@ -114,7 +114,7 @@ En la concatenación de sistemas se deben de eliminar los estados de aceptación
 
 Teorema para poder intercambiar de NFA a DFA
 
-![[assets/Pasted image 20240305133542.png]]
+![](assets/Pasted%20image%2020240305133542.png)
 
 Los lenguajes regulares son reconocidos por lenguajes deterministas, que a su vez a otros no deterministas.
 
@@ -149,4 +149,4 @@ Jerarquía de operaciones:
 
 Construcción de diagramas de transiciones a partir de expresiones regulares:
 
-![[assets/Pasted image 20240331123652.png]]
+![](assets/Pasted%20image%2020240331124142.png)
