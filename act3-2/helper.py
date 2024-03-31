@@ -12,6 +12,8 @@ class DFA:
         # Final state
         self.F = None
 
+        # Invalid / Null / Unescapable State
+        self.invalid = None
         # Last word(s)' states traversed
         self.log = None
         # Last word(s)' parsed subwords
@@ -22,6 +24,8 @@ class DFA:
     def execute(self, word, visualize=True, parse=True):
         # Set current state at initial state
         curr = self.q
+        # Start count of number of transitions made
+        n_steps = 0
         # Check that the initial state is defined and in the list of states
         if not curr or curr not in self.Q:
             raise Exception("Initial state is not valid")
@@ -31,9 +35,9 @@ class DFA:
         # Initialize log of states with initial state
         log = [curr]
 
-        # If visualizing, display initial state
-        if visualize: 
-            print(f"[{curr}]")
+        # If debugging, display initial state
+        # print(f"[{curr}]")
+
         # If parsing, initialize empty subword and an empty list of parsed subwords
         if parse:
             parsed = []
@@ -44,9 +48,24 @@ class DFA:
         for c in word:
             # Perform transition in dfa to check next state
             next_ = self.d[curr][c]
-            # If visualizing, display source state and transition
-            if visualize: 
-                print(f"'{c}' - [{next_}]")
+
+            # If the next state is the invalid state, then we raise an error
+            if next_ == self.invalid:
+                msg = (
+                    "---------------------------------------\n"
+                    f"Syntax error at index {n_steps}: '{word[n_steps]}'\n"
+                    f"Last state recorded: [{curr}]\n"
+                    f"{word}\n"
+                    f"{"":>{n_steps}}^ Error\n"
+                    "---------------------------------------"
+                )
+                print(msg)
+                curr = next_
+                break
+            
+            # If debugging, display transition and next state
+            # if visualize: print(f"'{c}' - [{next_}]")
+
             # If parsing, parse character based on current and next state
             if parse:
                 save, keep = self.parsing_criteria(curr, next_)
@@ -56,10 +75,21 @@ class DFA:
                     subword += c
                 else: 
                     subword = c
+
             # Set current state as the next state for the following iteration
             curr = next_
             # Add state to log
             log.append(curr)
+            # Increase steps done
+            n_steps += 1
+        
+        # Define whether the word was accepted or not based on the final state
+        accepted = curr in self.F
+
+        # If visualizing
+        if visualize:
+            status = "accepted" if accepted else "not accepted"
+            print(f"The word is {status} by the language")
 
         # If parsing
         if parse: 
@@ -68,29 +98,34 @@ class DFA:
             if save:  parsed.append((subword, curr))
             # Update list of parsed subwords
             self.parsed = parsed
+            # If also visualizing
+            if visualize:
+                # Print the parsed subwords
+                print(parsed)
         # Record log of word
         self.log = log
+        print()
 
-        # Return whether the word is accepted or not based on final state
-        return curr in self.F
+        # Return the acceptance status of the word
+        return accepted
     
 
     def execute_list(self, words, visualize=True, parse=True):
         n = len(words)
+        # List of acceptance status for all words in the list
         accepted = [0] * n
-        # If visualize, save log for all words in list
+        # Log of logs, each for the states of all words in the list
         log = []
-        # If parse, parse every words in list
-        parsed = []
+        # If parsing, parse every words in list
+        if parse: parsed = []
         # Execute for every word in the list
         for i in range(n):
+            # Execute word and add its states to log of logs
             accepted[i] = self.execute(words[i], visualize=visualize, parse=parse)
-            status = "accepted" if accepted[i] else "not accepted"
-            print(f"The word is {status} by the language")
             log.append(self.log)
+            # If parsing, add to list of parsed words
             if parse: 
                 parsed.append(self.parsed)
-                print(parsed[-1])
         self.log = log
         if parse: self.parsed = parsed
         return accepted
@@ -150,10 +185,13 @@ def setSolutionDFA(dfa):
 
     dfa.parsing_criteria = parsing_criteria
 
-    # Set transitions of each state
+    # Declare invalid state
+    dfa.invalid = "invalid"
+
+    # Declare transitions of each state
     # We use a defaultdict because every character transition not explicitly defined will
-    # transition to a default state. This is necessary because it is a DFA
-    d = {state : defaultdict(lambda: "invalid") for state in dfa.Q}
+    # transition to the invalid state. This is necessary because it is a DFA
+    d = {state : defaultdict(lambda: dfa.invalid) for state in dfa.Q}
 
     # ---------------------------------------------------------------------------------------
     # Define ranges of common chracters
@@ -181,7 +219,7 @@ def setSolutionDFA(dfa):
     # Transitions of the "start_(" state
     # Same as start state but the transition to self changes
     d["start_("] = d["s"]
-    d["start_("][' '] = d["start_("]
+    d["start_("][' '] = "start_("
 
     # Transitions of the "start_await_comment" state
     d["start_await_comment"]['/'] = "comment"
@@ -255,6 +293,9 @@ def setSolutionDFA(dfa):
         for c in _d: d[op][c] = "int"
         for c in ['-', '+']: d[op][c] = "sign"
         for c in _w_noDigits: d[op][c] = "var"
+    
+    # Additionally, the "(" state can receive ')' immediatelly
+    d["("][')'] = ")"
 
     # Transitions of the "await_value" state
     d["await_value"][' '] = "await_value"
@@ -280,10 +321,12 @@ def setSolutionDFA(dfa):
     # Transitions of the "success" state
     # All characters bring you back to the same state
     d["success"] = defaultdict(lambda: "success")
+    d["success"][" "] = "success"
 
     # Transitions of the "invalid" state
     # All characters bring you back to the same state
-    # d["invalid"] = defaultdict(lambda: "invalid")
+    d["invalid"] = defaultdict(lambda: "invalid")
+    d["invalid"][" "] = "invalid"
     # ---------------------------------------------------------------------------------------
 
     # Assign transitions to dfa object
