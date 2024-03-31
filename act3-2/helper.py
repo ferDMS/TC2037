@@ -12,66 +12,74 @@ class DFA:
         # Final state
         self.F = None
 
-        # Current state
-        self.state = None
         # Last word(s)' states traversed
-        self.steps = None
-        # Last word(s)' parsed elements
+        self.log = None
+        # Last word(s)' parsed subwords
         self.parsed = None
         # Criteria on which to parse at a given state or not
         self.parsing_criteria = None
 
     def execute(self, word, visualize=True, parse=True):
         # Set current state at initial state
-        self.state = self.q
-
+        curr = self.q
         # Check that the initial state is defined and in the list of states
-        if not self.state or self.state not in self.Q:
+        if not curr or curr not in self.Q:
             raise Exception("Initial state is not valid")
-
+        
         # Display word to execute
         print(f"\nExecuting word: \"{word}\"")
-        # Display initial state
-        steps = [self.state]
-        if visualize: print(f"[{self.state}]")
-        # Initialize empty subword and an empty list of parsed subwords
+        # Initialize log of states with initial state
+        log = [curr]
+
+        # If visualizing, display initial state
+        if visualize: 
+            print(f"[{curr}]")
+        # If parsing, initialize empty subword and an empty list of parsed subwords
         if parse:
-            subword = ""
             parsed = []
+            # Define variable to save concatenation of transition characters (subword)
+            subword = ""
 
         # Run word through automata
         for c in word:
-            # Add character to subword
-            subword += c
-            # Perform step in dfa
-            self.state = self.d[self.state][c]
-            # Parse element based on previous state, current state, transition and current subword
-            # If true, parse subword now and refresh it. Else, keep adding to it.
+            # Perform transition in dfa to check next state
+            next_ = self.d[curr][c]
+            # If visualizing, display source state and transition
+            if visualize: 
+                print(f"'{c}' - [{next_}]")
+            # If parsing, parse character based on current and next state
             if parse:
-                save, keep = self.parsing_criteria(steps[-1], self.state, c, subword)
-                if save: parsed.append((subword, steps[-1]))
-                subword = subword if keep else c
-            # Set current state and previous state, adding to steps
-            steps.append(self.state)
-            # Display source state and transition
-            if visualize: print(f"'{c}' - [{self.state}]")
-        
-        # Add last remaining subword to parsed subwords if not empty
+                save, keep = self.parsing_criteria(curr, next_)
+                if save:  
+                    parsed.append((subword, curr))
+                if keep: 
+                    subword += c
+                else: 
+                    subword = c
+            # Set current state as the next state for the following iteration
+            curr = next_
+            # Add state to log
+            log.append(curr)
+
+        # If parsing
         if parse: 
-            if len(subword): parsed.append((subword, self.state))
+            # Add last remaining subword depending on criteria
+            save, keep = self.parsing_criteria(curr, None) # No next transition
+            if save:  parsed.append((subword, curr))
+            # Update list of parsed subwords
             self.parsed = parsed
-        # Record steps of word
-        self.steps = steps
+        # Record log of word
+        self.log = log
 
         # Return whether the word is accepted or not based on final state
-        return self.state in self.F
+        return curr in self.F
     
 
     def execute_list(self, words, visualize=True, parse=True):
         n = len(words)
         accepted = [0] * n
-        # If visualize, save steps for all words in list
-        steps = []
+        # If visualize, save log for all words in list
+        log = []
         # If parse, parse every words in list
         parsed = []
         # Execute for every word in the list
@@ -79,11 +87,11 @@ class DFA:
             accepted[i] = self.execute(words[i], visualize=visualize, parse=parse)
             status = "accepted" if accepted[i] else "not accepted"
             print(f"The word is {status} by the language")
-            steps.append(self.steps)
+            log.append(self.log)
             if parse: 
                 parsed.append(self.parsed)
                 print(parsed[-1])
-        self.steps = steps
+        self.log = log
         if parse: self.parsed = parsed
         return accepted
 
@@ -101,38 +109,44 @@ def setSolutionDFA(dfa):
     # The alphabet of the automata is every character available in Unicode
 
     # Declare all the states of the automata
-    dfa.Q = {"s", "sign", "start_(", "start_await_comment", "single_dot", "int", "var", "float", "e", "e_sign", "float_e", "comment", "var_await_op", "await_op", "+", "-", "*", "^", "/", "=", "(", ")", "invalid", "success"}
+    dfa.Q = {"s", "sign", "start_(", "start_await_comment", "single_dot", "int", "var", "float", "e", "e_sign", "float_e", "comment", "var_await_op", "await_op", "+", "-", "*", "^", "/", "=", "(", ")", "await_value", "invalid", "success"}
 
     # Declare initial state
     dfa.q = "s"
 
     # Declare acceptance states
-    dfa.F = {"s", "int", "var", "float", "float_e", "var_await_op", "await_op", "comment", "success"}
+    dfa.F = {"s", "int", "var", "float", "float_e", "var_await_op", "await_op", "await_value", "comment", "success"}
 
     # Declare parsing criteria
-    def parsing_criteria(prev, curr, c, subword):
-        # States that always save and reset a subword
-        greedy_states = {"int", "var", "float", "comment"}
-        parsing_states = greedy_states | {"float_e", "+", "-", "*", "^", "/", "=", "(", ")"}
-        # ending_states = {"var_await_op", "await_op", "success"}
+    def parsing_criteria(curr, next_):
+        # States that should be parsed
+        to_parse = {"int", "var", "float", "float_e", "+", "-", "*", "^", "/", "=", "(", ")", "comment"}
 
-        # If the previous state is a state to be parsed
-        if prev in parsing_states: 
-            # If the state just repeated
-            if curr == prev:
-                # If it's a greedy state, let's keep add the char but not save the subword yet
-                if curr in greedy_states: return (0, 1)
-                # If it's not a greedy state but 
-                # If it's not a greedy state, let's save the subword and reset it
-                else: return (1, 0)
-            # Else, the state is not repeated. Let's check if the prev state should be parsed or not
-            elif prev in parsing_states: return (1, 0)
-            # If the state shouldn't be parsed, don't save but keep subword
-            else: return (0, 1)
+        # States that can or not be parsed but that always extend a subword
+        # By extending is meant to keep the subword
+        extends = {"float", "float_e", "e", "e_sign", "comment"}
 
-        # Any other subwords can be kept but not saved
-        return (0, 1)
+        # If the next state extends the current state
+        if next_ in extends:
+            # Don't save yet and keep the word
+            return 0, 1
 
+        # If current state shouldn't be parsed
+        if curr not in to_parse:
+            # Don't save and don't keep the word
+            return 0, 0
+
+        # If current state should be parsed
+        else:
+            # If state doesn't change on transition
+            if curr == next_:
+                # Don't save yet and keep the word
+                return 0, 1
+            
+            # If state changes on transition
+            else:
+                # Save and don't keep the word
+                return 1, 0
 
     dfa.parsing_criteria = parsing_criteria
 
@@ -235,12 +249,20 @@ def setSolutionDFA(dfa):
 
     # Transitions of the operator states ['+', '-', '*', '^', '/', '=', '(']
     for op in _o + ['=', '(']:
-        d[op][' '] = op
+        d[op][' '] = "await_value"
         d[op]['('] = "("
         d[op]['.'] = "single_dot"
         for c in _d: d[op][c] = "int"
         for c in ['-', '+']: d[op][c] = "sign"
         for c in _w_noDigits: d[op][c] = "var"
+
+    # Transitions of the "await_value" state
+    d["await_value"][' '] = "await_value"
+    d["await_value"]['('] = "("
+    d["await_value"]['.'] = "single_dot"
+    for c in _d: d["await_value"][c] = "int"
+    for c in ['-', '+']: d["await_value"][c] = "sign"
+    for c in _w_noDigits: d["await_value"][c] = "var"
     
     # Transitions of the ")" state
     # Same as await_op but we stay in this state with ' '

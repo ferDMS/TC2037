@@ -22,9 +22,9 @@ def lexerAritmetico(archivo):
 
     # Run DFA with expressions
     accepted = dfa.execute_list(expressions)
-    print(dfa.parsed)
+    print(accepted)
     
 
 
-lexerAritmetico("expresiones.txt")
+lexerAritmetico("ejemplos.txt")
     
