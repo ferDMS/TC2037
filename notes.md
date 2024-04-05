@@ -150,3 +150,27 @@ Jerarquía de operaciones:
 Construcción de diagramas de transiciones a partir de expresiones regulares:
 
 ![](assets/Pasted%20image%2020240331124142.png)
+
+## Sesión \#11
+
+Gramáticas libres de contexto
+
+$G=(V,\Sigma,R,S)$
+
+donde
+
+- $V$ es un conjunto finito de variables, conjunto de símbolos no terminales
+- $\Sigma$ es un conjunto finito disconjunto (no tienen elementos que hacen intersección) de $V$, conjunto de símbolos terminales
+- $S$ es la variable inicial, a fuerzas es no terminal, por lo que $S\in V$.
+- $R$ son las reglas de derivación
+
+Las gramáticas libres de contexto son generadores de lenguajes, mientras que con los DFAs reconocemos lenguajes. 
+
+Para todo lenguaje regular se puede generar una gramática  libre de contexto, pero no toda G.L.C puede ser convertida en un lenguaje regular. Un ejemplo de esto es el lenguaje:
+
+$L=\{a^nb^n|n\in\mathbb{N}\}$.
+
+![[Pasted image 20240402144157.png]]
+
+En el ejemplo anterior se está remplazando $S\rightarrow aSb$. Esto funciona como una "asignación", que claramente es recursiva, pues depende de sí misma. En vez de "asignación", le podemos llamar a esto una regla. Podemos combinar reglas como querramos, por lo que en un momento dado podemos "terminar la recursión" y aplicar la segunda regla $S\rightarrow\varepsilon$.
+
