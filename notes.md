@@ -174,3 +174,25 @@ $L=\{a^nb^n|n\in\mathbb{N}\}$.
 
 En el ejemplo anterior se está remplazando $S\rightarrow aSb$. Esto funciona como una "asignación", que claramente es recursiva, pues depende de sí misma. En vez de "asignación", le podemos llamar a esto una regla. Podemos combinar reglas como querramos, por lo que en un momento dado podemos "terminar la recursión" y aplicar la segunda regla $S\rightarrow\varepsilon$.
 
+## Sesión \#12
+
+Para derivación se agarra primero la variable inicial y empezamos a agarrar reglas para esa variable. La línea vertical es solamente como n separador, no es un símbolo.
+
+Las gramáticas regulares son gramáticas creadoras de lenguajes regulares.
+
+[Muy buena explicación](https://web.stanford.edu/class/archive/cs/cs103/cs103.1164/lectures/18/Small18.pdf)
+
+## Sesión \#13
+
+Un buen truco es primero diseñar el automata y luego intentar hacerlo una gramática libre de contexto.
+
+Autómatas de pila (PPA)
+
+$M=(Q,\Sigma,\Gamma,\delta,q_0,F)$
+
+donde cambian algunas definiciones específicas de los autómatas de antes
+
+- $\delta : Q\times \Sigma\times \Gamma \rightarrow P(Q\times \Gamma)$, donde el primero es de lectura y el segundo de escritura
+
+[Muy buena explicación x2](https://web.stanford.edu/class/archive/cs/cs103/cs103.1132/lectures/17/Small17.pdf)
+
