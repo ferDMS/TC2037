@@ -196,3 +196,22 @@ donde cambian algunas definiciones específicas de los autómatas de antes
 
 [Muy buena explicación x2](https://web.stanford.edu/class/archive/cs/cs103/cs103.1132/lectures/17/Small17.pdf)
 
+## Sesión \#14
+
+![](assets/Pasted%20image%2020240412142125.png)
+
+Cada entrada de la tabla representa una tupla donde se define (x, y), donde:
+
+- x: Estado hacia donde la transición nos lleva
+- y: Que char se coloca hasta arriba de la pila (la parte de la derecha de $\rightarrow$).
+
+Conversión de gramáticas libres de contexto a autómatas de pila
+
+![](assets/Pasted%20image%2020240412145000.png)
+
+## Sesión \#15
+
+Explicación del reto del bloque (a grandes rasgos)
+
+![](assets/Pasted%20image%2020240416132959.png)
+
