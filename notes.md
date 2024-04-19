@@ -215,3 +215,36 @@ Explicación del reto del bloque (a grandes rasgos)
 
 ![](assets/Pasted%20image%2020240416132959.png)
 
+## Sesión \#16
+
+Una máquina de Turing es una computadora, en pocas palabras, es decir, tiene toda su capacidad y todas las computadoras son efectivamente una máquina de Turing mucho más compleja. Una máquina de Turing tiene una cinta infinita. Hay un mecanismo de control, que sería nuestra tabla de transiciones $\delta$ que tiene un cabezal de lectura y escritura, que es lo que se mueve a través de la cinta infinita.
+
+La Tesis Church-Turing dice que se pueden modelar las computadoras como cálculo lambda o como máquinas de Turing. En el cálculo lambda todo son funciones, todo se define en funciones, no hay variables en sí. Sin embargo la tesis lo que dice es que ambas son lo mismo pero que simplemente son diferentes perspectivas de lo mismo.
+
+![](assets/Pasted%20image%2020240419135739.png)
+
+Una máquina de Turing se puede definir como una 7-tupla:
+
+- $Q$: Todos los estados
+- $\Sigma$: Alfabeto de entrada que no contiene símbolos en blanco. Los **símbolos en blanco** son símbolos que se usan para dividir la memoria, para seleccionar un espacio de memoria en específico.
+
+$\Gamma$ tiene los símbolos que nos van a ayudar a hacer las operaciones
+
+$\{L,R\}$ para definir si vamos a mover el cabezal a la izquierda o a la derecha, y se define dentro de $\delta$.
+
+Los estados especiales $q_{accept}$ y $q_{reject}$ son estados de aceptación y de rechazo. Dependiendo del tipo de máquina de Turing que estamos diseñando, pueden haber más estados especiales. Para una `Decidable Turing Machine` solamente tenemos estos dos estados, donde necesariamente tenemos que aceptar o rechazar cierto estado en específico.
+
+[Más buenas explicaciones de Stanford](https://web.stanford.edu/class/archive/cs/cs103/cs103.1134/lectures/17/Small17.pdf)
+
+El diagrama de la máquina de turing define:
+
+$a\rightarrow b,R$, donde:
+
+- $a$ es el símbolo que lee el cabezal
+- $b$ es opcional; es un símbolo que se sustituye sobre $a$, como sobreescribir lo que acabamos de leer
+- $R$ es la dirección a la cuál nos vamos después de leer el símbolo
+
+Ejemplo de diagrama:
+
+![](assets/Pasted%20image%2020240419143334.png)
+
