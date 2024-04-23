@@ -236,6 +236,8 @@ Los estados especiales $q_{accept}$ y $q_{reject}$ son estados de aceptación y 
 
 [Más buenas explicaciones de Stanford](https://web.stanford.edu/class/archive/cs/cs103/cs103.1134/lectures/17/Small17.pdf)
 
+[Presentación completa (con animaciones)](https://web.stanford.edu/class/archive/cs/cs103/cs103.1134/lectures/17/Slides17.pdf)
+
 El diagrama de la máquina de turing define:
 
 $a\rightarrow b,R$, donde:
@@ -248,3 +250,34 @@ Ejemplo de diagrama:
 
 ![](assets/Pasted%20image%2020240419143334.png)
 
+## Sesión \#17
+
+Las máquinas de Turing no es más que diseño de algoritmos cuando no tenemos una pila, considerando las reglas específicas de una Máquina de Turing, que son la cinta infinita (doubly linked list), cabezal y dirección de movimiento del mismo.
+
+$L_4=\{a^ib^jc^{ij}|ij\geq1\}$
+
+Lectura de símbolos:
+
+- a: X
+- b: Y
+- c: Z
+
+Algoritmo
+
+1. Recorrer a la derecha, al leer `b`, regresar a la izquierda
+	1. Al inicio debe de ser `a`, y la vamos a leer a `X`, si no hay `a` entonces el input es incorrecto.
+	2. Ya corriendo el algoritmo debe de ser `X`, sin problema, continuar.
+3. Recorrer hacia la derecha hasta llegar a `c` y regresar a la izquierda.
+4. Debe ser `b`, y la vamos a leer a `Y`, si no hay `b` entonces el input es incorrecto o no corrió bien el algoritmo para reiniciar los valores `b` leídos.
+5. Recorrer hacia la derecha hasta llegar a `Z` ó char en blanco. De aquí nos regresamos a la izquierda para regresar a lo que debería de ser la última `c` no leída.
+6. Debe ser `c`, y la vamos a leer a `Z`, si no hay `c` entonces el input es incorrecto.
+7. Recorrer hacia la izquierda lo que sea
+	1. Hasta llegar a `b`, significa que podemos leerla a `Y` y que debemos leer más `c`.
+		1. Repetir desde paso 5.
+	2. Hasta llegar a `X`, significa que ya leímos todas las `b`  y que debemos reiniciarlas a ser no leídas.
+		1. Recorrer hacia la derecha convirtiendo todas las `Y` en `b` hasta llegar a `c` ó a `Z`. No importa cuál pues tenemos otras condiciones antes / después para saber si aceptar la palabra o no, y esta no es una de ellas.
+	3. Esto nunca debería llegar hasta `a` o es erróneo el algoritmo
+8. Una vez que se termino el ciclo anterior con 7.2, recorrer hacia la izquierda todo
+	1. Hasta llegar a `a`, significa que todavía deberíamos de seguir leyendo más `c`.
+		1. Repetir desde el paso 1.
+	2. Hasta llegar a `blanco` significa que ya leímos todas las `b` para todas las `a`, y que si no fallamos en nuestra cuenta de `c` entonces la palabra es aceptada :).
