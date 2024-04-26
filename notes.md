@@ -254,30 +254,55 @@ Ejemplo de diagrama:
 
 Las máquinas de Turing no es más que diseño de algoritmos cuando no tenemos una pila, considerando las reglas específicas de una Máquina de Turing, que son la cinta infinita (doubly linked list), cabezal y dirección de movimiento del mismo.
 
-$L_4=\{a^ib^jc^{ij}|ij\geq1\}$
+Quiz 8: https://turingmachine.io/
 
-Lectura de símbolos:
+```
+input: 'HaabbH'
+blank: ' '
+start state: q0
+table:
+  q0:
+    H: {R: q1}
+    a: {R: rej}
+    b: {R: rej}
+    ' ': {R: rej}
+  q1:
+    a: {write: X, R: q2}
+    Y: {R: q4}
+    b: {R: rej}
+    ' ': {R: rej}
+    H: {R: rej}
+  q2:
+    Y: R
+    a: R
+    b: {write: Y, L: q3}
+    H: {R: rej}
+    ' ': {R: rej}
+  q3:
+    Y: L
+    a: L
+    X: {R: q1}
+  q4:
+    Y: R
+    b: {R: rej}
+    H: {R: q5}
+    ' ': {R: rej}
+  q5:
+    ' ': {L: done}
+  rej:
+  done:
+```
 
-- a: X
-- b: Y
-- c: Z
+## Sesión \#18
 
-Algoritmo
+En la programación funcional no hay variables, no hay fors, ciclos, sino recursividad.
 
-1. Recorrer a la derecha, al leer `b`, regresar a la izquierda
-	1. Al inicio debe de ser `a`, y la vamos a leer a `X`, si no hay `a` entonces el input es incorrecto.
-	2. Ya corriendo el algoritmo debe de ser `X`, sin problema, continuar.
-3. Recorrer hacia la derecha hasta llegar a `c` y regresar a la izquierda.
-4. Debe ser `b`, y la vamos a leer a `Y`, si no hay `b` entonces el input es incorrecto o no corrió bien el algoritmo para reiniciar los valores `b` leídos.
-5. Recorrer hacia la derecha hasta llegar a `Z` ó char en blanco. De aquí nos regresamos a la izquierda para regresar a lo que debería de ser la última `c` no leída.
-6. Debe ser `c`, y la vamos a leer a `Z`, si no hay `c` entonces el input es incorrecto.
-7. Recorrer hacia la izquierda lo que sea
-	1. Hasta llegar a `b`, significa que podemos leerla a `Y` y que debemos leer más `c`.
-		1. Repetir desde paso 5.
-	2. Hasta llegar a `X`, significa que ya leímos todas las `b`  y que debemos reiniciarlas a ser no leídas.
-		1. Recorrer hacia la derecha convirtiendo todas las `Y` en `b` hasta llegar a `c` ó a `Z`. No importa cuál pues tenemos otras condiciones antes / después para saber si aceptar la palabra o no, y esta no es una de ellas.
-	3. Esto nunca debería llegar hasta `a` o es erróneo el algoritmo
-8. Una vez que se termino el ciclo anterior con 7.2, recorrer hacia la izquierda todo
-	1. Hasta llegar a `a`, significa que todavía deberíamos de seguir leyendo más `c`.
-		1. Repetir desde el paso 1.
-	2. Hasta llegar a `blanco` significa que ya leímos todas las `b` para todas las `a`, y que si no fallamos en nuestra cuenta de `c` entonces la palabra es aceptada :).
+- **Recursión lineal**: involucra llamar a una función que sigue llamándose, baja hasta el caso base, y se va construyendo el resultado final conforme vamos subiendo de regreso a la primera llamada de la función, donde el resultado solo lo obtenemos hasta regresar completamente hasta arriba.
+
+La recursión más importante que haremos:
+
+- **Recursión de cola**: sería pasar como parámetro adicional también el resultado que la función tiene actualmente calculado ( el resultado mientras vamos bajando hasta el caso base ). Una vez que llegamos al caso base podemos regresar el valor, pues la respuesta se va construyendo mientras vamos bajando. En la llamada del caso base se regresa el resultado final y se hace "fastforward" a través de por donde bajamos, regresando este mismo valor.
+
+Racket
+
+- La sintaxis es en preorden, es decir es como si definieramos la función al inicio y después sus parámetros (e.g.: `(+ 2 2)`).
