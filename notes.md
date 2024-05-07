@@ -306,3 +306,8 @@ La recursión más importante que haremos:
 Racket
 
 - La sintaxis es en preorden, es decir es como si definieramos la función al inicio y después sus parámetros (e.g.: `(+ 2 2)`).
+
+## Sesión \#19
+
+gramaticas, pdas, conversiones de gramaticas a pdas y maquinas de turing
+
