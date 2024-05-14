@@ -1,0 +1,46 @@
+/* Cada tipo de token y su color */
+.comment {
+    color: green;
+    font-style: italic;
+}
+
+.variable {
+    color: blue;
+    font-weight: bold;
+}
+
+.delimiters {
+    color: black;
+}
+
+.string {
+    color: red;
+}
+
+.int,
+.float {
+    color: purple;
+}
+
+.operator {
+    color: orange;
+}
+
+.method {
+    color: teal;
+}
+
+.keyword {
+    color: navy;
+    font-weight: bold;
+}
+
+.soft_keyword {
+    color: navy;
+    font-weight: bold;
+}
+
+/* Ajustar detalles para mejor legibilidad */
+body {
+    font-family: Arial, sans-serif;
+}
