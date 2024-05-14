@@ -311,3 +311,32 @@ Racket
 
 gramaticas, pdas, conversiones de gramaticas a pdas y maquinas de turing
 
+## Sesión \#21
+
+Listas en racket se definen como `` `(1, 2, 3) ``:
+
+- `cons`, para construir una nueva lista a partir de dos parámetros: un elemento a meter, y la lista donde se meterá el element. si el elemento ya es una lista entonces así como cualquier otro elemento se va a meter dentro, anidada.
+	- ``(cons 1 `(1, 2)) = `(1,1,2)``
+
+Debido a que en una recursión estamos construyendo en el orden contrario una vez que llegamos al caso base, podemos indicar que al llegar al mismo se invierta la lista para que esté en el orden que buscamos.
+
+Dentro de la función recursiva la lista donde estamos construyendo el resultado a través de cada iteración se le puede llamar el acumulador, por que va a acumulando el resultado.
+
+Por ejemplo:
+
+```c
+; Ejemplo 2
+(define (enlist lst)
+  (define (iter lst enlsted)
+    (cond
+      [(empty? lst) (reverse enlsted)] ; Caso base
+      [else (iter (rest lst) (cons (cons (first lst) empty) enlsted))])
+      ; [else (iter (rest lst) (cons (list (first lst)) enlsted))])
+  )
+  (iter lst empty)
+)
+
+; (displayln (enlist '('(1 2) 3 4))) ; Uso
+```
+
+Algo interesante que se ve arriba es que realmente la función que hace toda la lógica recursiva es la función anidada `iter`. La función de afuera `enlist` es solo como un wrapper que llama a `iter` con cierta condición inicial y con cierto input inicial.
