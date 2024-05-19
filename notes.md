@@ -315,7 +315,7 @@ gramaticas, pdas, conversiones de gramaticas a pdas y maquinas de turing
 
 Listas en racket se definen como `` `(1, 2, 3) ``:
 
-- `cons`, para construir una nueva lista a partir de dos parámetros: un elemento a meter, y la lista donde se meterá el element. si el elemento ya es una lista entonces así como cualquier otro elemento se va a meter dentro, anidada.
+- `cons`, para construir una nueva lista a partir de dos parámetros: un elemento a meter, y la lista donde se meterá el elemento. si el elemento ya es una lista entonces así como cualquier otro elemento se va a meter dentro, anidada.
 	- ``(cons 1 `(1, 2)) = `(1,1,2)``
 
 Debido a que en una recursión estamos construyendo en el orden contrario una vez que llegamos al caso base, podemos indicar que al llegar al mismo se invierta la lista para que esté en el orden que buscamos.
@@ -340,3 +340,5 @@ Por ejemplo:
 ```
 
 Algo interesante que se ve arriba es que realmente la función que hace toda la lógica recursiva es la función anidada `iter`. La función de afuera `enlist` es solo como un wrapper que llama a `iter` con cierta condición inicial y con cierto input inicial.
+
+
