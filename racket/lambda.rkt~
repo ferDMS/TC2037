@@ -1,0 +1,8 @@
+#lang racket
+
+; Funciones anónimas
+; (lambda (<id>*) <expr>+)
+
+(define (terminator s func)
+  (func s))
+)

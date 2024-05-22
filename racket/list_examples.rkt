@@ -1,4 +1,9 @@
 #lang racket
+
+; Ejercicios en clase y extras
+; Fernando Daniel Monroy Sánchez
+; A01750536
+
 ; Ejemplo 1
 (define (duplicate lst)
   (define (iter lst lst-dup)
@@ -153,6 +158,37 @@
 )
 
 
+; Ejemplo 11
+; Dericadas hermosas y dulces :3 <3
+(define (derivada f h)
+  (lambda (x)
+    (/ (- (f (+ x h)) (f x)) h)
+  )
+)
+(define (f1 x)
+  (* x x x))
+(define (f2 x)
+  (sin x))
+(define df1 (derivada f1 0.001))
+(define df2 (derivada f2 0.001))
+(define ddf1 (derivada df1 0.001))
+(define dddf1 (derivada ddf1 0.001))
+
+
+; Ejemplo 12
+(define (newton f n)
+  (let ([df (derivada f 0.001)])
+    (define (iter x_t t)
+      (cond
+        [(= t n) x_t]
+        [else (iter (- x_t (/ (f x_t) (df x_t)) ) (+ t 1) ) ]
+      )
+    )
+    (iter 100 0)
+  )
+)
+
+
 ; Extra 1
 (define (gcd a b)
   ; Función para obtener todos los divisores comúnes
@@ -186,15 +222,60 @@
 ; Extra 2
 La función pack toma una lista como entrada. Devuelve una lista de listas que agrupan los elementos iguales consecutivos.
 (pack '(a a a b b c a a)) -> '((a a a) (b b) (c) (a a))
+|#
+(define (pack lst)
+  (define (iter lst lst-new)
+    (cond
+      [(empty? lst) (reverse lst-new)]
+      [(eq? (first lst) (first (first lst-new)) ) (iter (rest lst) (cons (cons (first lst) (first lst-new) ) (rest lst-new) ) ) ]
+      [else (iter (rest lst) (cons (cons (first lst) empty) lst-new) )]
+    )
+  )
+  (cond
+    [(empty? lst) #f]
+    [else (iter (rest lst) (cons (cons (first lst) empty) empty) )]
+  )
+)
 
+
+#|
 ; Extra 3
 (compress '(a b c d)) -> '(a b c d)
 (compress '(a a a b b c c a)) -> '(a b c a)
+|#
+(define (compress lst)
+  (define (iter lst lst-new)
+    (cond
+      [(empty? lst) (reverse lst-new)]
+      [(eq? (first lst) (first lst-new) ) (iter (rest lst) lst-new ) ]
+      [else (iter (rest lst) (cons (first lst) lst-new) )]
+    )
+  )
+  (cond
+    [(empty? lst) empty]
+    [else (iter (rest lst) (cons (first lst) empty) )]
+  )
+)
 
+
+#|
 ; Extra 4
 (encode '(a a a b c c)) -> '(3 a) (1 b) (2 c))
 (encode '(1 2 3 4)) -> ((1 1) (1 2) (1 3) (1 4))
 |#
+(define (encode lst)
+  (define (iter lst lst-new)
+    (cond
+      [(empty? lst) (reverse lst-new)]
+      [(eq? (first lst) (list-ref (first lst-new) 1) ) (iter (rest lst) (cons (list (+ (first (first lst-new)) 1) (first lst) ) (rest lst-new) ) ) ]
+      [else (iter (rest lst) (cons (list 1 (first lst)) lst-new) )]
+    )
+  )
+  (cond
+    [(empty? lst) #f]
+    [else (iter (rest lst) (list (list 1 (first lst))  ) )]
+  )
+)
 
 (display "Ejemplo 1\n")
 (displayln (duplicate '(1 2 3 4)))
@@ -227,8 +308,29 @@ La función pack toma una lista como entrada. Devuelve una lista de listas que a
 (display "Ejemplo 10\n")
 (displayln (linear-search '(48 77 30 31 5 20 91 92 69 97 28 32 17 18 96) 18 =) )
 
+(display "Ejemplo 11\n")
+(displayln (df1 3))
+(displayln (ddf1 3))
+(displayln (dddf1 3))
+(displayln (df2 10))
+
+(display "Ejemplo 12\n")
+(displayln (newton (lambda (x) (sqr x)) 2000))
+(displayln (newton (lambda (x) (sin x)) 2000))
+
 (display "Extra 1\n")
 (displayln (gcd 13 7919)) ; 1
 (displayln (gcd 20 16))   ; 4
 (displayln (gcd 72 54))   ; 18
 (displayln (gcd 100 75))  ; 25
+
+(display "Extra 2\n")
+(displayln (pack '(a a a b b c a a)))
+
+(display "Extra 3\n")
+(displayln (compress '(a b c d)))          ; '(a b c d)
+(displayln (compress '(a a a b b c c a)))  ; '(a b c a)
+
+(display "Extra 4\n")
+(displayln (encode '(a a a b c c)))        ; '((3 a) (1 b) (2 c))
+(displayln (encode '(1 2 3 4)))            ; '((1 1) (1 2) (1 3) (1 4))
