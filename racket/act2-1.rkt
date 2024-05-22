@@ -20,10 +20,10 @@
   (iter (abs b) 1)
 )
 
-(displayln "\nEjercicio 1:")
-(displayln (pow 5 0))
-(displayln (pow -5 3))
-(displayln (pow 2 10))
+;(displayln "\nEjercicio 1:")
+;(displayln (pow 5 0))
+;(displayln (pow -5 3))
+;(displayln (pow 2 10))
 
 
 ; Ejercicio 2
@@ -40,12 +40,12 @@
   )
 )
 
-(displayln "\nEjercicio 2:")
-(displayln (fib 0))
-(displayln (fib 1))
-(displayln (fib 2))
-(displayln (fib 6))
-(displayln (fib 42))
+;(displayln "\nEjercicio 2:")
+;(displayln (fib 0))
+;(displayln (fib 1))
+;(displayln (fib 2))
+;(displayln (fib 6))
+;(displayln (fib 42))
 
 
 ; Ejercicio 3
@@ -60,10 +60,10 @@
   (iter lst empty)
 )
 
-(displayln "\nEjercicio 3:")
-(displayln (positives '()) )
-(displayln (positives '(12 -4 3 -1 -10 -13 6 -5)) )
-(displayln (positives (list -4 -1 -10 -13 -5)) )
+;(displayln "\nEjercicio 3:")
+;(displayln (positives '()) )
+;(displayln (positives '(12 -4 3 -1 -10 -13 6 -5)) )
+;(displayln (positives (list -4 -1 -10 -13 -5)) )
 
 
 ; Ejercicio 4
@@ -77,10 +77,10 @@
   (iter lst 0)
 )
 
-(displayln "\nEjercicio 4:")
-(displayln (add-list '()) )
-(displayln (add-list '(2 4 1 3)) )
-(displayln (add-list '(1 2 3 4 5 6 7 8 9 10)) )
+;(displayln "\nEjercicio 4:")
+;(displayln (add-list '()) )
+;(displayln (add-list '(2 4 1 3)) )
+;(displayln (add-list '(1 2 3 4 5 6 7 8 9 10)) )
 
 
 ; Ejercicio 5
@@ -95,10 +95,10 @@
   (iter lst)
 )
 
-(displayln "\nEjercicio 5:")
-(displayln (list-of-symbols? '() ))
-(displayln (list-of-symbols? '(a b c d e) ))
-(displayln (list-of-symbols? '(a b c d 42 e) ))
+;(displayln "\nEjercicio 5:")
+;(displayln (list-of-symbols? '() ))
+;(displayln (list-of-symbols? '(a b c d e) ))
+;(displayln (list-of-symbols? '(a b c d 42 e) ))
 
 
 ; Ejercicio 6
@@ -112,10 +112,10 @@
   (iter lst1 lst2 0)
 )
 
-(displayln "\nEjercicio 6:")
-(displayln (dot-product '() '() ))
-(displayln (dot-product '(1 2 3) '(4 5 6) ))
-(displayln (dot-product '(1.3 3.4 5.7 9.5 10.4) '(-4.5 3.0 1.5 0.9 0.0) ))
+;(displayln "\nEjercicio 6:")
+;(displayln (dot-product '() '() ))
+;(displayln (dot-product '(1 2 3) '(4 5 6) ))
+;(displayln (dot-product '(1.3 3.4 5.7 9.5 10.4) '(-4.5 3.0 1.5 0.9 0.0) ))
 
 
 ; Ejercicio 7
@@ -132,10 +132,10 @@
   )
 )
 
-(displayln "\nEjercicio 7:")
-(displayln (average '() ))
-(displayln (average '(4) ))
-(displayln (average '(5 6 1 6 0 1 2) ))
+;(displayln "\nEjercicio 7:")
+;(displayln (average '() ))
+;(displayln (average '(4) ))
+;(displayln (average '(5 6 1 6 0 1 2) ))
 
 
 ; Ejercicio 8
@@ -158,8 +158,8 @@
   (iter lst empty 1)
 )
 
-(displayln "\nEjercicio 8:")
-(displayln (expand '() ))
-(displayln (expand '(a) ))
-(displayln (expand '(1 2 3 4) ))
-(displayln (expand '(a b c d e) ))
+;(displayln "\nEjercicio 8:")
+;(displayln (expand '() ))
+;(displayln (expand '(a) ))
+;(displayln (expand '(1 2 3 4) ))
+;(displayln (expand '(a b c d e) ))
