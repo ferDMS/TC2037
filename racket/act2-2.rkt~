@@ -1,0 +1,20 @@
+#lang racket
+
+; Actividad 2.2
+; Fernando Daniel Monroy Sánchez
+; A01750536
+
+(define (insert n lst)
+  (define (iter lst lst-new)
+    (cond
+      [(empty? lst) (reverse lst-new)]
+      [(= (first lst) n ) (iter lst (cons n lst-new) ) ]
+      [else (iter (rest lst) (cons (first lst) lst-new) ) ]
+    )
+  )
+  (iter lst empty)
+)
+
+(displayln(insert 14 '()))
+(displayln(insert 4 '(5 6 7 8)))
+(displayln(insert 5 '(1 3 6 7 9 16)))
