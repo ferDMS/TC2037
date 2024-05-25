@@ -342,3 +342,6 @@ Por ejemplo:
 Algo interesante que se ve arriba es que realmente la función que hace toda la lógica recursiva es la función anidada `iter`. La función de afuera `enlist` es solo como un wrapper que llama a `iter` con cierta condición inicial y con cierto input inicial.
 
 
+## Sesión \#24
+
+Una vez que se utiliza un hilo muere a menos de que se especifica que se dividan, corran en paralelo y después converjan en uno.
