@@ -345,3 +345,26 @@ Algo interesante que se ve arriba es que realmente la función que hace toda la 
 ## Sesión \#24
 
 Una vez que se utiliza un hilo muere a menos de que se especifica que se dividan, corran en paralelo y después converjan en uno.
+
+En computación, programación concurrente y paralela no necesariamente significan lo mismo, por la manera en que este paralelismo se implementa. 
+
+Hace décadas, se implementaba un pseudoparalelismo, donde un único procesador "comparte" su tiempo de procesamiento entre múltiples tareas, dando la ilusión de paralelismo. A esto se le conoce como **concurrencia**. Puede implementarse de esta manera o en paralelismo verdadero. Lo importante, es que **un programa es concurrente si tiene más de un contexto en ejecución** (más de una tarea que se quiere hacer).
+
+Diferente a esta concurrencia, **paralelismo** es cuando sí existen fisicamente múltiples núcleos o procesadores corriendo al mismo tiempo.
+
+Algunos algoritmos tienen cierto máximo porcentaje $\rho$ de cuánto se pueden beneficiar del paralelismo, así que no necesariamente $n \rightarrow \infty$ ($n$ procesadores) significa tener un factor de speedup.
+
+Problema de concurrencia es que introduce no determinismo y dependencia de la velocidad de ejecución. 
+
+**Race conditions** pasan porque si un proceso que modifica / utiliza un mismo recurso se ejecuta en concurrencia, ambos procesos "corren" a acabar el proceso antes que el otro, pero solo el resultado de aquél que lo termina segundo es el que permanece. Las variables atómicas se aseguran de que todo o nada se modifique (como un sql txn).
+
+## Sesión \#25
+
+Para evitar condiciones de carrera se usan semáforos, monitores y mutex. En Go, nada más se tienen mutex (**mutual exclusion**). La región entre  `mutex.Lock()` y `mutex.Unlock()` es una región crítica. Si un hilo se queda parado o cambia de contexto (por ejemplo, ejecuta una acción concurrente de Spotify) justo en mientras está en este proceso y otro hilo entra a realizarlo mientras el otro no está, va a ver una corrupción de datos. Lo que hace es colocar un candado, un seguro, para que solamente se desbloquee la información o proceso hasta que termine de leer la parte crítica.
+
+Si se nos olvida colocar `mutex.Unlock` vamos a tener un deadlock, es decir, que alguien agarro el recurso y ya no lo quiere soltar por lo que ya nadie puede ingresar a este.
+
+## Sesión \#26
+
+Problema de los filósofos y Problema del lector escritor
+
